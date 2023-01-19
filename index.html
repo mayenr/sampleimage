@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image slider for mp02</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+    <style>
+        * {box-sizing: border-box;}
+    .img-comp-container {
+        position: relative;
+        height: 300px; 
+    }
+
+    .img-comp-img {
+        position: absolute;
+        width: auto;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .img-comp-img img {
+        display: block;
+        vertical-align: middle;
+    }
+
+    .img-comp-slider {
+        position: absolute;
+        z-index: 9;
+        cursor: ew-resize;
+        width: 40px;
+        height: 40px;
+        background-color: #1d62bd;
+        opacity: 0.7;
+        border-radius: 50%;
+    }
+    </style>
+</head>
+<body>
+    <h1>Sample para sa MP02 namin</h1>
+    <h5>Image Comparison Slider - ilalagay sa landing page</h5>
+        <br><br>
+    <div class="container" style="padding-left: 1vw;">
+        <div class="img-comp-container">
+            <div class="img-comp-img">
+                <img src="light model.jpg" width="300" height="300">
+            </div>
+            <div class="img-comp-img img-comp-overlay">
+                <img src="dark model.jpg" width="300" height="300">
+            </div>
+        </div>
+    </div>
+    
+
+<!---Yung Javascripts-------------------->    
+    <script>
+        function initComparisons() {
+            var x, i;
+  
+            x = document.getElementsByClassName("img-comp-overlay");
+            for (i = 0; i < x.length; i++) {
+  
+            compareImages(x[i]);
+            }
+        function compareImages(img) {
+            var slider, img, clicked = 0, w, h;
+  
+            w = img.offsetWidth;
+            h = img.offsetHeight;
+  
+            img.style.width = (w / 2) + "px";
+  
+            slider = document.createElement("DIV");
+            slider.setAttribute("class", "img-comp-slider");
+  
+            img.parentElement.insertBefore(slider, img);
+  
+            slider.style.top = (h / 2) - (slider.offsetHeight / 2) + "px";
+            slider.style.left = (w / 2) - (slider.offsetWidth / 2) + "px";
+  
+            slider.addEventListener("mousedown", slideReady);
+  
+            window.addEventListener("mouseup", slideFinish);
+  
+            slider.addEventListener("touchstart", slideReady);
+  
+            window.addEventListener("touchend", slideFinish);
+        
+        function slideReady(e) {
+  
+            e.preventDefault();
+  
+            clicked = 1;
+  
+            window.addEventListener("mousemove", slideMove);
+            window.addEventListener("touchmove", slideMove);
+            }
+        function slideFinish() {
+  
+            clicked = 0;
+        }
+        function slideMove(e) {
+            var pos;
+  
+            if (clicked == 0) return false;
+  
+                pos = getCursorPos(e)
+  
+            if (pos < 0) pos = 0;
+            if (pos > w) pos = w;
+  
+                slide(pos);
+        }
+        function getCursorPos(e) {
+            var a, x = 0;
+            e = (e.changedTouches) ? e.changedTouches[0] : e;
+  
+            a = img.getBoundingClientRect();
+  
+            x = e.pageX - a.left;
+  
+            x = x - window.pageXOffset;
+            return x;
+        }
+        function slide(x) {
+  
+            img.style.width = x + "px";
+  
+            slider.style.left = img.offsetWidth - (slider.offsetWidth / 2) + "px";
+        }
+    }
+    }
+    </script>
+    
+    <script>
+        initComparisons();
+    </script>      
+
+</body>
+</html>
